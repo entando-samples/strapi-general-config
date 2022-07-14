@@ -2,6 +2,7 @@ import { Col, FieldLevelHelp, Grid, Row } from 'patternfly-react';
 import { Button } from 'patternfly-react/dist/js/components/Button';
 import React, { Component } from 'react';
 import { getStrapiConfiguration, saveStrapiConfiguration } from '../api/api';
+import { BUTTON_SAVE, LABEL_APPLICATION_URL, LABEL_STRAPI_CONFIG_SETTINGS, MSG_REQ_APPLICATION_URL, MSG_VALID_APPLICATION_URL, TOOLTIP_URL } from '../helpers/constants';
 
 export default class StrapiSettingForm extends Component {
     constructor(props) {
@@ -21,11 +22,11 @@ export default class StrapiSettingForm extends Component {
         switch (name) {
             case "baseUrl":
                 if (!value) {
-                    return "Application URL is Required";
+                    return MSG_REQ_APPLICATION_URL;
                 } else if (
                     !value.match(/(?:https?):\/\/(\w+:?\w*)?(\S+)(:\d+)?(\/|\/([\w#!:.?+=&%!\-\/]))?/)
                 ) {
-                    return "Enter a valid application URL";
+                    return MSG_VALID_APPLICATION_URL;
                 } else {
                     return "";
                 }
@@ -49,7 +50,7 @@ export default class StrapiSettingForm extends Component {
     };
 
     handleSubmit = e => {
-        const { fields, error } = this.state;
+        const { fields } = this.state;
         e.preventDefault();
         let validationErrors = {};
         Object.keys(fields).forEach(name => {
@@ -80,7 +81,7 @@ export default class StrapiSettingForm extends Component {
             this.setState({
                 fields: { baseUrl: data.data.baseUrl }
             });
-        } else if(data && isError) {
+        } else if (data && isError) {
             console.error(data);
         }
     }
@@ -95,14 +96,14 @@ export default class StrapiSettingForm extends Component {
     }
 
     render() {
-        const { fields, errors } = this.state;
+        const { errors } = this.state;
         return (
             <div>
             <form autoComplete="off" onSubmit={this.handleSubmit}>
                 <Grid>
                     <Row className="mt-2">
                         <Col lg={12}>
-                            <h1><b>Strapi config setting</b></h1>
+                            <h1><b>{LABEL_STRAPI_CONFIG_SETTINGS}</b></h1>
                         </Col>
                     </Row>
                     <Row className="mt-2"></Row>
@@ -110,13 +111,13 @@ export default class StrapiSettingForm extends Component {
                         <Col lg={3}>
                             <label htmlFor="type" className="control-label">
                                 <span className="FormLabel">
-                                    <span>Application URL</span>
+                                    <span>{LABEL_APPLICATION_URL}</span>
                                     <sup>
                                         <i className="fa fa-asterisk required-icon FormLabel__required-icon"></i>
                                     </sup>
                                 </span>
                             </label>
-                            <FieldLevelHelp buttonClass="" close={undefined} content="URL of the application, Example - http://142.32.54.82:1337." inline placement="right" rootClose />
+                            <FieldLevelHelp buttonClass="" close={undefined} content={TOOLTIP_URL} inline placement="right" rootClose />
                         </Col>
                         <Col lg={5}>
                             <input
@@ -135,7 +136,7 @@ export default class StrapiSettingForm extends Component {
                     <Row>
                         <Col lg={8}></Col>
                         <Col lg={4}>
-                            <Button className="btn-primary btn" type="submit">Save</Button>
+                            <Button className="btn-primary btn" type="submit">{BUTTON_SAVE}</Button>
                         </Col>
                     </Row>
                 </Grid>
