@@ -24,7 +24,7 @@ export default class StrapiSettingForm extends Component {
                 if (!value) {
                     return MSG_REQ_APPLICATION_URL;
                 } else if (
-                    !value.match(/(?:https?):\/\/(\w+:?\w*)?(\S+)(:\d+)?(\/|\/([\w#!:.?+=&%!\-\/]))?/)
+                    !value.match(/(?:https?):\/\/(localhost|(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5]))(:([0-9]|[1-9][0-9]|[1-9][0-9]{2}|[1-9][0-9]{3}|[1-5][0-9]{4}|6([0-4][0-9]{3}|5([0-4][0-9]{2}|5([0-2][0-9]|3[0-5])))))?$/)
                 ) {
                     return MSG_VALID_APPLICATION_URL;
                 } else {
