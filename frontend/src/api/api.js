@@ -1,6 +1,11 @@
 import axios from "axios";
 const appUrl = `${process.env.REACT_APP_PUBLIC_URL}`;
 
+/**
+ * Request to save strapi configurations
+ * @param {*} data 
+ * @returns 
+ */
 export const saveStrapiConfiguration = async (data) => {
     const url = `${appUrl}`;
     const result = await axios.post(url, data, addAuthorizationRequestConfig())
@@ -12,6 +17,10 @@ export const saveStrapiConfiguration = async (data) => {
         return errorCheck(result);
 }
 
+/**
+ * Request to get strapi configurations
+ * @returns 
+ */
 export const getStrapiConfiguration = async () => {
     const url = `${appUrl}`;
     const result = await axios.get(url, addAuthorizationRequestConfig())

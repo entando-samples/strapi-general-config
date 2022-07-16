@@ -1,5 +1,5 @@
 import { Col, FieldLevelHelp, Grid, Row } from 'patternfly-react';
-import { Button } from 'patternfly-react/dist/js/components/Button';
+import { Spinner } from 'patternfly-react/dist/js/components/Spinner';
 import React, { Component } from 'react';
 import { getStrapiConfiguration, saveStrapiConfiguration } from '../api/api';
 import { BUTTON_SAVE, LABEL_APPLICATION_URL, LABEL_STRAPI_CONFIG_SETTINGS, MSG_REQ_APPLICATION_URL, MSG_VALID_APPLICATION_URL, TOOLTIP_URL } from '../helpers/constants';
@@ -14,7 +14,8 @@ export default class StrapiSettingForm extends Component {
             },
             errors: {
                 baseUrl: ''
-            }
+            },
+            loadingData: false
         };
     }
 
@@ -76,6 +77,7 @@ export default class StrapiSettingForm extends Component {
     }
 
     async callSaveStrapiConfiguration(payload) {
+        this.setState({ loadingData: true });
         const { data, isError } = await saveStrapiConfiguration(payload);
         if (data && !isError) {
             this.setState({
@@ -84,15 +86,18 @@ export default class StrapiSettingForm extends Component {
         } else if (data && isError) {
             console.error(data);
         }
+        this.setState({ loadingData: false });
     }
 
     async callGetStrapiConfiguration() {
+        this.setState({ loadingData: true });
         const { data, isError } = await getStrapiConfiguration();
         if (data && data.data && !isError) {
             this.setState({
                 fields: { baseUrl: data.data.baseUrl }
             });
         }
+        this.setState({ loadingData: false });
     }
 
     render() {
@@ -130,13 +135,21 @@ export default class StrapiSettingForm extends Component {
                                 onChange={event => this.handleUserInput(event)}
                             />
                             <span className="text-danger">{errors.baseUrl}</span>
+                            {this.state.loadingData &&
+                                <Spinner
+                                loading={this.state.loadingData}
+                                className=""
+                                size="md"
+                                ></Spinner>}
                         </Col>
                         <Col lg={4}></Col>
                     </Row>
                     <Row>
                         <Col lg={8}></Col>
                         <Col lg={4}>
-                            <Button className="btn-primary btn" type="submit">{BUTTON_SAVE}</Button>
+                            <button className="btn-primary btn"
+                                disabled={this.state.errors.baseUrl.length}>{BUTTON_SAVE}
+                            </button>
                         </Col>
                     </Row>
                 </Grid>

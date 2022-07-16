@@ -23,7 +23,7 @@
   },
   "scripts": {
     "start-NOHR": "react-scripts start",
-    "start": "cross-env HOST=0.0.0.0 WDS_SOCKET_HOST=0.0.0.0 WDS_SOCKET_PORT=3000 PORT=3001 DANGEROUSLY_DISABLE_HOST_CHECK=true react-app-rewired start",
+    "start": "cross-env HOST=0.0.0.0 WDS_SOCKET_HOST=0.0.0.0 WDS_SOCKET_PORT=3001 PORT=3001 DANGEROUSLY_DISABLE_HOST_CHECK=true react-app-rewired start",
     "build-NOHR": "react-scripts build",
     "build": "react-app-rewired build",
     "test": "react-scripts test",
