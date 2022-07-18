@@ -8,7 +8,6 @@ export default class StrapiSettingForm extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            name: 'formValidation',
             fields: {
                 baseUrl: ""
             },
@@ -19,21 +18,15 @@ export default class StrapiSettingForm extends Component {
         };
     }
 
-    validate = (name, value) => {
-        switch (name) {
-            case "baseUrl":
-                if (!value) {
-                    return MSG_REQ_APPLICATION_URL;
-                } else if (
-                    !value.match(/(?:https?):\/\/(localhost|(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5]))(:([0-9]|[1-9][0-9]|[1-9][0-9]{2}|[1-9][0-9]{3}|[1-5][0-9]{4}|6([0-4][0-9]{3}|5([0-4][0-9]{2}|5([0-2][0-9]|3[0-5])))))?$/)
-                ) {
-                    return MSG_VALID_APPLICATION_URL;
-                } else {
-                    return "";
-                }
-            default: {
-                return "";
-            }
+    validate = (value) => {
+        if (!value) {
+            return MSG_REQ_APPLICATION_URL;
+        } else if (
+            !value.match(/(((http)|(https))?:\/\/(www)\.(\w+)\.((\w{3})|(\w{2}))$)|^((https?:\/\/))(?:([a-zA-Z]+)|(\d+\.\d+.\d+.\d+)):\d{4}$/)
+        ) {
+            return MSG_VALID_APPLICATION_URL;
+        } else {
+            return "";
         }
     }
 
@@ -41,7 +34,7 @@ export default class StrapiSettingForm extends Component {
         this.setState({
             errors: {
                 ...this.state.errors,
-                [e.target.name]: this.validate(e.target.name, e.target.value)
+                [e.target.name]: this.validate(e.target.value)
             },
             fields: {
                 ...this.state.fields,
@@ -53,15 +46,9 @@ export default class StrapiSettingForm extends Component {
     handleSubmit = e => {
         const { fields } = this.state;
         e.preventDefault();
-        let validationErrors = {};
-        Object.keys(fields).forEach(name => {
-            const error = this.validate(name, fields[name]);
-            if (error && error.length > 0) {
-                validationErrors[name] = error;
-            }
-        });
-        if (Object.keys(validationErrors).length > 0) {
-            this.setState({ errors: validationErrors });
+        const error = this.validate(fields.baseUrl);
+        if (error) {
+            this.setState({ errors: error });
             return;
         }
         if (fields.baseUrl) {
