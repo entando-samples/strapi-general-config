@@ -1,5 +1,6 @@
 import { Col, FieldLevelHelp, Grid, Row } from 'patternfly-react';
 import { Spinner } from 'patternfly-react/dist/js/components/Spinner';
+import { TimedToastNotification, ToastNotificationList } from 'patternfly-react/dist/js/components/ToastNotification';
 import React, { Component } from 'react';
 import { getStrapiConfiguration, saveStrapiConfiguration } from '../api/api';
 import { BUTTON_SAVE, LABEL_APPLICATION_URL, LABEL_STRAPI_CONFIG_SETTINGS, MSG_REQ_APPLICATION_URL, MSG_VALID_APPLICATION_URL, TOOLTIP_URL } from '../helpers/constants';
@@ -10,7 +11,10 @@ export default class StrapiSettingForm extends Component {
         this.state = {
             baseUrl: "",
             error: '',
-            loadingData: false
+            loadingData: false,
+            showNotification: false,
+            message: "",
+            notificationType: "success"
         };
     }
 
@@ -49,12 +53,21 @@ export default class StrapiSettingForm extends Component {
         const { data, isError } = await saveStrapiConfiguration(payload);
         if (data && data.data && !isError) {
             this.setState({
-                baseUrl: data.data.baseUrl
+                baseUrl: data.data.baseUrl,
+                showNotification: true,
+                notificationType: "success",
+                message: "URL configured successfully."
             });
         } else if (data && isError) {
             console.error(data);
+            this.setState({
+                showNotification: true,
+                notificationType: "error",
+                message: "URL not configured successfully."
+            });
         }
         this.setState({ loadingData: false });
+        setTimeout(() => this.setState({ showNotification: false }), 3000);
     }
 
     async callGetStrapiConfiguration() {
@@ -122,6 +135,23 @@ export default class StrapiSettingForm extends Component {
                         </Row>
                     </Grid>
                 </form>
+                <div>
+                    {this.state.showNotification &&
+                        <ToastNotificationList
+                            className=""
+                        >
+                            <TimedToastNotification
+                                className=""
+                                onDismiss={null}
+                                type={this.state.notificationType}
+                            // timerdelay={3000}
+                            >
+                                <span>
+                                    {this.state.message}
+                                </span>
+                            </TimedToastNotification>
+                        </ToastNotificationList>}
+                </div>
             </div>
         )
     }
