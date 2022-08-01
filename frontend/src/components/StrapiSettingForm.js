@@ -22,7 +22,7 @@ export default class StrapiSettingForm extends Component {
         if (!value) {
             return MSG_REQ_APPLICATION_URL;
         } else if (
-            !value.match(/(((http)|(https))?:\/\/(www)\.(\w+)\.((\w{3})|(\w{2}))$)|^((https?:\/\/))(?:([a-zA-Z]+)|(\d+\.\d+.\d+.\d+)):\d{4}$/)
+            !value.match(/(((http)|(https))?:\/\/(www)\.(\w+)\.((\w{3})|(\w{2}))$)|^((https?:\/\/))(?:([a-zA-Z]+)|(\d+\.\d+\.\d+\.\d+)):\d{4}?$/)
         ) {
             return MSG_VALID_APPLICATION_URL;
         } else {
@@ -137,18 +137,9 @@ export default class StrapiSettingForm extends Component {
                 </form>
                 <div>
                     {this.state.showNotification &&
-                        <ToastNotificationList
-                            className=""
-                        >
-                            <TimedToastNotification
-                                className=""
-                                onDismiss={null}
-                                type={this.state.notificationType}
-                            // timerdelay={3000}
-                            >
-                                <span>
-                                    {this.state.message}
-                                </span>
+                        <ToastNotificationList>
+                            <TimedToastNotification onDismiss={null} type={this.state.notificationType}>
+                                <span> {this.state.message} </span>
                             </TimedToastNotification>
                         </ToastNotificationList>}
                 </div>
