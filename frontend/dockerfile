@@ -1,9 +1,0 @@
-FROM node:14.10.0
-WORKDIR entando/appbuilder_dev/dev_new/strapi-config-ms/strapi-general-config/frontend
-COPY ./package*.json ./
-RUN npm i
-COPY . .
-ENV NODE_ENV production
-RUN npm run build
-EXPOSE 3001
-CMD ["npm", "run", "start"]

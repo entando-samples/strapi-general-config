@@ -1,0 +1,6 @@
+code: et-strapi-config-app
+titles:
+  en: Strapi config widget
+  it: Modello di contenuto
+group: free
+customUiPath: et-strapi-config-widget.ftl
