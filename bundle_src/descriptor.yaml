@@ -1,4 +1,4 @@
-code: ent-strapi-config-bundle
+code: strapi-config-widget
 description: Strapi URL configuration for entando widgets
 components:
   plugins:
